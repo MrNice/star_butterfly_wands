@@ -13,7 +13,7 @@ from collections import deque
 
 IS_RASPBERRY_PI = os.uname()[4][:3] == 'arm'
 
-with open("config.toml", "r") as f:
+with open("config.toml", "rb") as f:
     config = tomli.load(f)
 # Video directory and video list will be different on different machines
 # TODO(pixelicious): Update the config file to group directory with video file names.
