@@ -1,0 +1,17 @@
+# config.toml
+windows_videos = [
+    "video.mp4",
+    "video2.mp4",
+    "video3.mp4"
+]
+
+raspberry_pi_videos = [
+    "video.mp4",
+    "video2.mp4",
+    "video3.mp4"
+]
+
+virtualbox_videos = [
+    "sample-5s.mp4",
+    "sample-30s.mp4"
+]

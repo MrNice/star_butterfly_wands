@@ -3,8 +3,9 @@ import os
 from sys import platform
 
 os.environ['DISPLAY'] = ':0.0'
-import vlc
+import tomli
 import tkinter as tk
+import vlc
 
 from tkinter import ttk
 
@@ -12,16 +13,18 @@ from collections import deque
 
 IS_RASPBERRY_PI = os.uname()[4][:3] == 'arm'
 
+with open("config.toml", "r") as f:
+    config = tomli.load(f)
 # Video directory and video list will be different on different machines
-# TODO(pixelicious): Create a config file using TOML or similar to clean this hard coding up
+# TODO(pixelicious): Update the config file to group directory with video file names.
 video_dir = r"C:\Users\Nick\Videos\star_wand"
-video_files = []
+video_files = config["windows_videos"]
 if IS_RASPBERRY_PI:
     video_dir = r"/home/pixel/Videos"
-    video_files = ["video.mp4", "video2.mp4", "video3.mp4"]
+    video_files = config["raspberry_pi_videos"]
 elif platform == "linux":
-    video_files = ["sample-5s.mp4", "sample-30s.mp4"]
     video_dir = r"/home/pixel/videos"
+    video_files = config["virtualbox_videos"]
 
 class App(tk.Frame):
     def __init__(self, master=None):
@@ -29,11 +32,10 @@ class App(tk.Frame):
         self.instance = vlc.Instance()
         self.pack()
         self.create_widgets()
-        self.media = self.instance.media_new(r"/home/pixel/videos/sample-5s.mp4")
-        self.media2 = self.instance.media_new(r"/home/pixel/videos/sample-30s.mp4")
+        for file in video_files:
+            path = os.path.join(video_dir, file)
+            self.media_queue.append(self.instance.media_new(path))
         self.media_queue = deque()
-        self.media_queue.append(self.media)
-        self.media_queue.append(self.media2)
         self.player = self.instance.media_player_new()
         self.player_widget = ttk.Frame(master, width=320, height=200)
         self.player_widget.pack(fill='both', expand=True)
