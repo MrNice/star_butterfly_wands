@@ -1,4 +1,6 @@
 # This is a sample Python script. import vlc
+import os
+os.environ['DISPLAY'] = ':0.0'
 
 import vlc
 import tkinter as tk
