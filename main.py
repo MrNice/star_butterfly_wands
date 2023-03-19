@@ -32,10 +32,10 @@ class App(tk.Frame):
         self.instance = vlc.Instance()
         self.pack()
         self.create_widgets()
+        self.media_queue = deque()
         for file in video_files:
             path = os.path.join(video_dir, file)
             self.media_queue.append(self.instance.media_new(path))
-        self.media_queue = deque()
         self.player = self.instance.media_player_new()
         self.player_widget = ttk.Frame(master, width=320, height=200)
         self.player_widget.pack(fill='both', expand=True)
